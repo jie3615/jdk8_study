@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * @author: wyj
@@ -62,7 +63,13 @@ public class Test003 {
         list.stream().map(item->item.toUpperCase()).forEach(System.out::println);
         System.out.println("#########");
         //使用方法引用，使用类或者对象都可以进行方法引用； toUpperCase()的参数是调用者
-        list.stream().map(String::toUpperCase).forEach(System.out::println);
+        // toUpperCase是一个实例方法，在真正调用的时候是具体的一个字符串；对应Function中的第一个参数
+        /**
+         * @FunctionalInterface
+           public interface Function<T, R>  T：输入，R：输出
+         */
+        Function<String,String> function = String::toUpperCase;
+        list.stream().map(function).forEach(System.out::println);
 
 
 
