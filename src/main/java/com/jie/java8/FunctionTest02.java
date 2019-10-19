@@ -62,6 +62,10 @@ public class FunctionTest02 {
     public void test03() {
         FunctionTest02 functionTest02 = new FunctionTest02();
         System.out.println(functionTest02.calculate04(1, 3, a->a*a,(a, b) -> a + b));
+        // 先执行biFunction ,1+3=4 ，再执行4*4=16；
+        /**
+         * BiFunction为什么不存在compose方法，因为执行的结果会交给biFunction本身，biFunction是要提供两个参数 ，而上一步的结果只能返回一个结果；
+         */
     }
 
 }
