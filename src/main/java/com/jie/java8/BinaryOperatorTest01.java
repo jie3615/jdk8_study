@@ -1,4 +1,4 @@
-package com.jie;
+package com.jie.java8;
 
 import org.junit.Test;
 
