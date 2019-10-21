@@ -40,4 +40,35 @@ public class Student {
                 ", age=" + age +
                 '}';
     }
+
+    // 规范的比较行为，使用当前对象
+    public int comapareStuByAge2(Student student) {
+        return this.getAge() - student.getAge();
+    }
+
+    public int compareStuByName2(Student student) {
+        return this.getName().compareToIgnoreCase(student.getName());
+    }
+
+
+
+    // 根据年龄排序 ,静态方法
+    public static int compareStuByAge(Student student1, Student student2) {
+        return student1.getAge() - student2.getAge();
+    }
+
+    // 根据名字排序，静态方法
+    public static int compareStuByName(Student student1, Student student2) {
+        return student1.getName().compareToIgnoreCase(student2.getName());
+    }
+
+    // 根据年龄排序 ,实例方法
+    public  int compareStuByAge1(Student student1, Student student2) {
+        return student1.getAge() - student2.getAge();
+    }
+
+    // 根据名字排序，实例方法
+    public  int compareStuByName1(Student student1, Student student2) {
+        return student1.getName().compareToIgnoreCase(student2.getName());
+    }
 }
