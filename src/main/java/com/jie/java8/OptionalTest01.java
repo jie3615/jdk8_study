@@ -66,4 +66,14 @@ public class OptionalTest01 {
 
     }
 
+    @Test
+    public void test004() {
+
+        Employee employee = new Employee("aa", 21);
+        Employee employee1 = new Employee("bb",22);
+        List<Employee> employeeList = Arrays.asList(employee, employee1);
+//        List<Employee> employeeList =null;
+                System.out.println(Optional.ofNullable(employeeList).orElse(Collections.emptyList()));
+
+    }
 }
