@@ -3,6 +3,7 @@ package com.jie.java8.stream;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -52,4 +53,48 @@ public class StreamTest03 {
     public void test05() {
         Stream.iterate(1,item->item+2).limit(9).forEach(System.out::println);
     }
+
+    //  找出流中大于2的元素，然后将每个元素乘以2，然后忽略掉流中的前两个元素，然后取出流中的前两个元素，最后求出流中元素的总和；
+    @Test
+    public void test06() {
+        List<Integer> list = Stream.iterate(1, item -> item + 2).limit(6).collect(Collectors.toList());
+        System.out.println(list.stream().filter(e -> e > 2).mapToInt(e -> e * 2).skip(2).limit(2).sum());
+
+        List<Integer> list1 = Stream.iterate(1, item -> item + 2).limit(6).collect(Collectors.toList());
+        list1.stream().filter(e -> e > 2).mapToInt(e -> e * 2).skip(2).limit(2).max().ifPresent(System.out::println); // max返回OptionalInt类型，可以使用Optional中的方法
+    }
+
+    // 一次性取出最大值，最小值和总和，使用IntSummaryStatistics
+    @Test
+    public void test07() {
+        List<Integer> list = Stream.iterate(1, item -> item + 2).limit(6).collect(Collectors.toList());
+       IntSummaryStatistics summaryStatistics  = list.stream().filter(e -> e > 2).mapToInt(e -> e * 2).skip(2).limit(2).summaryStatistics();
+        System.out.println(summaryStatistics.getMin());
+        System.out.println(summaryStatistics.getSum());
+        System.out.println(summaryStatistics.getMax());
+
+    }
+    @Test
+    public void test08() {
+        List<Integer> list = Stream.iterate(1, item -> item + 2).limit(6).collect(Collectors.toList());
+        Stream<Integer> stream = list.stream();
+        stream.distinct();
+        stream.filter(e -> e > 2);
+        /**
+         * 执行报错：流用过就不能继续使用
+         * java.lang.IllegalStateException: stream has already been operated upon or closed
+         at java.util.stream.AbstractPipeline.<init>(AbstractPipeline.java:203)
+         at java.util.stream.ReferencePipeline.<init>(ReferencePipeline.java:94)
+         at java.util.stream.ReferencePipeline$StatelessOp.<init>(ReferencePipeline.java:618)
+         at java.util.stream.ReferencePipeline$2.<init>(ReferencePipeline.java:163)
+         at java.util.stream.ReferencePipeline.filter(ReferencePipeline.java:162)
+         at com.jie.java8.stream.StreamTest03.test08(StreamTest03.java:82)
+         */
+
+        //重新获取流
+        list.stream().distinct();
+        list.stream().filter(e -> e > 2);
+
+    }
+
 }

@@ -76,4 +76,14 @@ public class OptionalTest01 {
                 System.out.println(Optional.ofNullable(employeeList).orElse(Collections.emptyList()));
 
     }
+    @Test
+    public void test005() {
+
+        Employee employee = new Employee("aa", 21);
+        employee =null;
+        Optional.ofNullable(employee).ifPresent(employee1 -> {
+
+        });
+
+    }
 }
