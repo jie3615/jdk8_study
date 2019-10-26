@@ -52,5 +52,13 @@ public class GroupTest01 {
         /**
          * {false=[Student{name='aa', age=23}, Student{name='ca', age=24}, Student{name='da', age=22}], true=[Student{name='aa', age=28}]}
          */
+        System.out.println("---------------");
+        System.out.println(list.stream().collect(Collectors.toMap(Student::getName, e -> e,(k1,k2)->k1)));
+        /**
+         *
+         * 两个aa
+         * 用 (k1,k2)->k1 来设置，如果有重复的key,则保留key1,舍弃key2
+         * {aa=Student{name='aa', age=23}, da=Student{name='da', age=22}, ca=Student{name='ca', age=24}}
+         */
     }
 }
