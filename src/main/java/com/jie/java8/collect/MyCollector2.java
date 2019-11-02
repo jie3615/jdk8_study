@@ -2,12 +2,14 @@ package com.jie.java8.collect;
 
 import org.junit.Test;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * @author: wyj
@@ -18,7 +20,11 @@ public class MyCollector2<T> implements Collector<T, Set<T>, Map<T, T>> {
     @Override
     public Supplier<Set<T>> supplier() {
         System.out.println("invoke supplier...");
-        return HashSet::new;
+//        return HashSet::new;
+        return ()->{
+            System.out.println("**********");
+            return new HashSet<>();
+        };
     }
 
     @Override
@@ -57,6 +63,7 @@ public class MyCollector2<T> implements Collector<T, Set<T>, Map<T, T>> {
     @Override
     public Set<Characteristics> characteristics() {
         System.out.println("invoke characteristics...");
+//        return Collections.unmodifiableSet(EnumSet.of(Characteristics.UNORDERED));
         return Collections.unmodifiableSet(EnumSet.of(Characteristics.UNORDERED,Characteristics.CONCURRENT));
 
         /**
@@ -96,7 +103,7 @@ public class MyCollector2<T> implements Collector<T, Set<T>, Map<T, T>> {
     // 并行流
     @Test
     public void test02() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             List<String> list = Arrays.asList("hello", "wyj", "nihao wyj", "jie", "jie", "a", "b", "a");
             Map<String, String> map = list.parallelStream().collect(new MyCollector2<>());
             System.out.println(map);
@@ -129,7 +136,32 @@ public class MyCollector2<T> implements Collector<T, Set<T>, Map<T, T>> {
          */
     }
 
+    // sequential() 串行流
+    // parallel() 并行流
+    @Test
+    public void test03() {
+        List<String> list = Arrays.asList("hello", "wyj", "nihao wyj", "jie", "jie", "a", "b", "a");
+        list.stream().sequential().parallel().collect(Collectors.toSet()).forEach(System.out::println);
+    }
 
 
+    /**
+     * 如果把这个Characteristics.CONCURRENT参数去掉，会多次打印创建中间结果容器
+     */
+    @Test
+    public void test04() {
+            List<String> list = Arrays.asList("hello", "wyj", "nihao wyj", "jie", "jie", "a", "b", "a");
+            Map<String, String> map = list.parallelStream().collect(new MyCollector2<>());
+            System.out.println(map);
+            System.out.println("#########");
+        /**
+         * 执行结果
+         * invoke characteristics...
+         **********
+         **********
+         accumulator    [a]main
+        。。。。
+         */
+    }
 
 }

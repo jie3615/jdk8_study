@@ -84,6 +84,7 @@ public class OptionalTest01 {
         Optional.ofNullable(employee).ifPresent(employee1 -> {
 
         });
+        Optional.ofNullable(employee);
 
     }
 }
